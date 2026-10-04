@@ -1,0 +1,8 @@
+
+Fatal error: Uncaught ReflectionException: Method LoginForm::__bogus__() does not exist in /var/www/html/lib/adianti/core/AdiantiCoreApplication.php:79
+Stack trace:
+#0 /var/www/html/lib/adianti/core/AdiantiCoreApplication.php(79): ReflectionMethod->__construct('LoginForm', '__bogus__')
+#1 /var/www/html/engine.php(37): Adianti\Core\AdiantiCoreApplication::run('0')
+#2 /var/www/html/engine.php(66): TApplication::run()
+#3 {main}
+  thrown in /var/www/html/lib/adianti/core/AdiantiCoreApplication.php on line 79

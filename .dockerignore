@@ -1,0 +1,13 @@
+www
+tests
+tools
+docs
+artifacts
+.git
+.github
+.DS_Store
+README.md
+SECURITY-NOTES.md
+VALIDATION.md
+SOURCE-PROVENANCE.md
+.gitignore

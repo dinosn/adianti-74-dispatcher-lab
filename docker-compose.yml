@@ -1,0 +1,48 @@
+name: adianti-dispatch-lab
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:${LAB_WEB_PORT:-18080}:80"
+    volumes:
+      - ./www:/var/www/html:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - lab
+    healthcheck:
+      test: ["CMD-SHELL", "php -r '$$s=@file_get_contents(\"http://127.0.0.1/manifest.json\"); exit($$s===false);'"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
+
+  db:
+    image: mysql:5.7@sha256:4bc6bc963e6d8443453676cae56536f4b8156d78bae03c0145cbe47c2aad73bb
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: adianti_lab
+      MYSQL_USER: adianti_lab
+      MYSQL_PASSWORD: lab-only
+    volumes:
+      - adianti-lab-db:/var/lib/mysql
+      - ./seed.sql:/docker-entrypoint-initdb.d/001-seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -proot --silent"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+      start_period: 20s
+    networks:
+      - lab
+
+volumes:
+  adianti-lab-db:
+
+networks:
+  lab: {}

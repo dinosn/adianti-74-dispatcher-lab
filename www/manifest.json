@@ -1,0 +1,7 @@
+{
+  "short_name": "Adianti Lab",
+  "name": "Adianti 7.4 Dispatcher Authorization Lab",
+  "lab_id": "adianti-74-dispatcher-lab-v1",
+  "start_url": "/",
+  "display": "standalone"
+}
