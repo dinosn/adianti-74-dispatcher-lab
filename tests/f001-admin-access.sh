@@ -6,10 +6,7 @@ B="${B:-http://127.0.0.1:18080}"
 OUT="$ROOT/tests/.tmp/f001-admin-access.json"
 PAGE="$ROOT/tests/.tmp/f001-admin-users-page.html"
 
-case "$B" in
-  http://127.0.0.1:*|http://localhost:*) ;;
-  *) echo "Refusing non-local base URL: $B" >&2; exit 2 ;;
-esac
+python3 "$ROOT/tools/loopback_guard.py" "$B"
 
 mkdir -p "$ROOT/tests/.tmp"
 rm -f "$OUT" "$PAGE"

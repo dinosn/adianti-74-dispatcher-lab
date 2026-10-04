@@ -5,13 +5,7 @@ set -euo pipefail
 B="${B:-http://127.0.0.1:18080}"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-case "$B" in
-  http://127.0.0.1:*|http://localhost:*) ;;
-  *)
-    echo "Refusing non-local base URL: $B" >&2
-    exit 2
-    ;;
-esac
+python3 "$ROOT/tools/loopback_guard.py" "$B"
 
 fail() {
   echo "FAIL_$1" >&2

@@ -91,6 +91,17 @@ grep -Fq 'ipaddress.ip_address(address).is_loopback' "$ROOT/tools/f001_admin_acc
 }
 echo 'PASS_lab_only_boundary'
 
+python3 "$ROOT/tools/loopback_guard.py" 'http://127.0.0.1:18080'
+if python3 "$ROOT/tools/loopback_guard.py" 'http://localhost:18080@192.0.2.1' >/dev/null 2>&1; then
+  echo 'FAIL_loopback_userinfo_bypass' >&2
+  exit 1
+fi
+if python3 "$ROOT/tools/loopback_guard.py" 'http://192.0.2.1:18080' >/dev/null 2>&1; then
+  echo 'FAIL_non_loopback_literal_accepted' >&2
+  exit 1
+fi
+echo 'PASS_shell_loopback_guard'
+
 for excluded_path in \
   "$ROOT/www/lib/adianti/service/AdiantiUploaderService.php" \
   "$ROOT/www/lib/adianti/service/AdiantiAutocompleteService.php" \

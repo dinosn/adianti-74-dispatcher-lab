@@ -127,6 +127,15 @@ def loopback_url(value: str, *, label: str = "URL") -> str:
         raise argparse.ArgumentTypeError(f"{label} must not contain credentials")
     if parsed.path or parsed.query or parsed.fragment:
         raise argparse.ArgumentTypeError(f"{label} must not contain a path, query, or fragment")
+    if parsed.hostname != "localhost":
+        try:
+            literal = ipaddress.ip_address(parsed.hostname)
+        except ValueError as exc:
+            raise argparse.ArgumentTypeError(
+                f"{label} host must be localhost or a literal loopback address"
+            ) from exc
+        if not literal.is_loopback:
+            raise argparse.ArgumentTypeError(f"{label} must use a loopback address")
     try:
         addresses = {
             item[4][0]
